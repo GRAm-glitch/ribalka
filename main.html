@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Карась · РКК-2026</title>
+    <style>
+        :root {
+            --bg-dark: #0b1a2e;
+            --card-bg: #132a45;
+            --accent: #2ecc71;
+            --accent-orange: #f39c12;
+            --accent-red: #e74c3c;
+            --text-light: #ecf0f1;
+            --text-muted: #aab7c4;
+            --border-radius: 24px;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #071522;
+            color: var(--text-light);
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            padding: 12px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 520px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding-bottom: 100px;
+        }
+
+        /* Шапка */
+        .header {
+            background: linear-gradient(145deg, #1a3b5c, #0f2740);
+            border-radius: var(--border-radius);
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #ffffff, #b8e0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .fish-name {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: #ffd966;
+            margin: 4px 0 2px;
+            letter-spacing: 1px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--accent);
+            font-weight: 700;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Секции */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .section-title span {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        /* Карточки */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #f0f0f0;
+        }
+
+        .card p, .card li {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .card ul, .card ol {
+            padding-left: 20px;
+        }
+
+        .card ol li {
+            margin-bottom: 4px;
+        }
+
+        .highlight {
+            background: rgba(243, 156, 18, 0.15);
+            color: #f1c40f;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Чекбоксы */
+        .ingredient-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .ingredient-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+
+        .ingredient-list li:last-child {
+            border-bottom: none;
+        }
+
+        .ingredient-list input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            accent-color: var(--accent);
+            cursor: pointer;
+            flex-shrink: 0;
+            border-radius: 6px;
+        }
+
+        /* Раскрывающиеся рецепты */
+        .recipe-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .recipe {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .recipe summary {
+            padding: 18px 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            list-style: none;
+            background: linear-gradient(90deg, rgba(46, 204, 113, 0.08), transparent);
+            color: #ffffff;
+            user-select: none;
+        }
+
+        .recipe summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .recipe summary::after {
+            content: "▾";
+            margin-left: auto;
+            font-size: 1.4rem;
+            transition: transform 0.2s;
+        }
+
+        .recipe[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .recipe-content {
+            padding: 0 20px 20px 20px;
+        }
+
+        .recipe-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        .recipe-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #f1c40f;
+        }
+
+        .step-list {
+            padding-left: 20px;
+            counter-reset: step;
+            margin-bottom: 12px;
+        }
+
+        .step-list li {
+            position: relative;
+            list-style: none;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--text-muted);
+            padding-left: 36px;
+            counter-increment: step;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .chef-secret {
+            background: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid var(--accent-orange);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: #e6cda6;
+        }
+
+        /* Нижнее меню */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 520px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(14, 34, 56, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px 30px 0 0;
+            padding: 12px 8px;
+            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px 4px;
+            border-radius: 16px;
+            gap: 4px;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .nav-btn span {
+            font-size: 1.6rem;
+        }
+
+        .nav-btn:active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: scale(0.9);
+        }
+
+        .nav-btn.active {
+            color: var(--accent);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 380px) {
+            .header h1 { font-size: 1.6rem; }
+            .header .fish-name { font-size: 2rem; }
+            .section-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка -->
+        <header class="header">
+            <h1>🎣 РКК-2026</h1>
+            <div class="fish-name">🐟 КАРАСЬ</div>
+            <span class="badge">Полный профиль · Ловля и рецепты</span>
+        </header>
+
+        <!-- МОДУЛЬ 1: РЫБАЛКА -->
+        <section id="fishing">
+            <div class="section-title"><span>🎣</span> Модуль 1 · Рыболовный навигатор</div>
+            <div class="card-grid">
+                <!-- Карточка: Где искать -->
+                <div class="card">
+                    <h3>📍 Где искать (Точки ловли)</h3>
+                    <p><span class="highlight">Утро:</span> мелководные заливы с камышом, прогретые солнцем (0.5–1.5 м).</p>
+                    <p><span class="highlight">День:</span> ямы, бровки, граница чистой воды и кувшинок (1.5–3 м).</p>
+                    <p><span class="highlight">Ночь:</span> выходы на кормежку к прибрежным отмелям, у тростника (0.3–1 м).</p>
+                    <p>Ищите карася в зарослях рогоза, около затопленных коряг, на границе течения и обратки.</p>
+                </div>
+
+                <!-- Карточка: Наживки -->
+                <div class="card">
+                    <h3>🐛 Наживки (Топ-5)</h3>
+                    <ul>
+                        <li><strong>Животные:</strong> навозный червь, мотыль, опарыш (по 2-3 шт. на крючке).</li>
+                        <li><strong>Растительные:</strong> перловка, манная болтушка с чесноком, тесто с анисом.</li>
+                        <li><strong>Бутерброд:</strong> червь + перловка; опарыш + кукуруза; мотыль + манка.</li>
+                    </ul>
+                </div>
+
+                <!-- Карточка: Снасть -->
+                <div class="card">
+                    <h3>⚙️ Идеальная снасть (поплавок)</h3>
+                    <ul>
+                        <li><strong>Удилище:</strong> маховое 4–6 м, легкое, с мягкой вершинкой.</li>
+                        <li><strong>Леска:</strong> основная 0.14–0.16 мм, поводок 0.10–0.12 мм.</li>
+                        <li><strong>Поплавок:</strong> 1.5–2.5 г, веретенообразный, с длинной антенной.</li>
+                        <li><strong>Крючок:</strong> №10–12 (по международной нумерации), с коротким цевьем.</li>
+                        <li><strong>Глубина:</strong> выставляйте так, чтобы насадка была в 2–5 см от дна.</li>
+                    </ul>
+                </div>
+
+                <!-- Карточка: Прикормка -->
+                <div class="card">
+                    <h3>🥣 Тактика прикормки</h3>
+                    <p><strong>Рецепт:</strong> панировочные сухари (50%), молотые жареные семечки (20%), вареная пшеница (15%), сухое молоко (10%), глина для вязкости (5%).</p>
+                    <p><strong>Тактика:</strong> стартовый закорм 3–4 шара размером с апельсин. Докармливать каждые 30–40 минут маленькими шариками (грецкий орех). Не перекармливать!</p>
+                </div>
+
+                <!-- Карточка: Секрет профи -->
+                <div class="card">
+                    <h3>💡 Лайфхак</h3>
+                    <p>При ловле в камышах используйте леску темно-зеленого цвета и шумовой поплавок. Карась пуглив — забрасывайте снасть плавно, без хлопков. Проводка: медленная, с остановками, чтобы насадка имитировала падающий корм.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- МОДУЛЬ 2: КУЛИНАРИЯ -->
+        <section id="cooking">
+            <div class="section-title"><span>🍳</span> Модуль 2 · Тонна рецептов из карася</div>
+            <div class="recipe-accordion">
+                <!-- Рецепт 1: На костре -->
+                <details class="recipe" open>
+                    <summary>🔥 На костре · Карась в фольге</summary>
+                    <div class="recipe-content">
+                        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800&auto=format&fit=crop" alt="Карась на костре">
+                        <h4>⭐ Сложность: Легко · ⏱️ 35 мин</h4>
+                        <ul class="ingredient-list">
+                            <li><input type="checkbox"> Карась (2 шт. по 400 г)</li>
+                            <li><input type="checkbox"> Лук репчатый (2 шт.)</li>
+                            <li><input type="checkbox"> Лимон (1 шт.)</li>
+                            <li><input type="checkbox"> Соль, перец, тимьян</li>
+                            <li><input type="checkbox"> Фольга</li>
+                        </ul>
+                        <ol class="step-list">
+                            <li>Почистить карася, удалить жабры.</li>
+                            <li>Натереть солью, перцем и тимьяном.</li>
+                            <li>В брюшко положить лук и лимон.</li>
+                            <li>Завернуть в два слоя фольги.</li>
+                            <li>Запекать на углях 15–20 минут.</li>
+                            <li>Перевернуть один раз в середине.</li>
+                        </ol>
+                        <div class="chef-secret">🌿 Секрет шефа: Чтобы убрать запах тины, замочите карася в воде с уксусом (1 ст.л. на литр) на 20 минут перед готовкой.</div>
+                    </div>
+                </details>
+
+                <!-- Рецепт 2: Ресторан дома -->
+                <details class="recipe">
+                    <summary>🍽️ Ресторан дома · Карась в сметанном соусе</summary>
+                    <div class="recipe-content">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop" alt="Рыба в соусе">
+                        <h4>⭐⭐ Сложность: Средняя · ⏱️ 50 мин</h4>
+                        <ul class="ingredient-list">
+                            <li><input type="checkbox"> Карась (2 крупных)</li>
+                            <li><input type="checkbox"> Сметана 20% (200 г)</li>
+                            <li><input type="checkbox"> Грибы шампиньоны (150 г)</li>
+                            <li><input type="checkbox"> Сливочное масло (30 г)</li>
+                            <li><input type="checkbox"> Чеснок, укроп, мука</li>
+                        </ul>
+                        <ol class="step-list">
+                            <li>Обжарить карася в муке до корочки.</li>
+                            <li>Отдельно обжарить грибы с луком.</li>
+                            <li>Смешать сметану, чеснок, укроп.</li>
+                            <li>Залить рыбу и грибы соусом.</li>
+                            <li>Тушить под крышкой 20 минут.</li>
+                            <li>Подавать с картофельным пюре.</li>
+                        </ol>
+                        <div class="chef-secret">🌿 Секрет шефа: Замените сметану на сливки для более нежного вкуса. Чтобы соус был гуще, добавьте чайную ложку муки, разведенную в холодной воде.</div>
+                    </div>
+                </details>
+
+                <!-- Рецепт 3: Быстро и полезно -->
+                <details class="recipe">
+                    <summary>🥗 Быстро и полезно · Паровые котлеты</summary>
+                    <div class="recipe-content">
+                        <img src="https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=800&auto=format&fit=crop" alt="Рыбные котлеты">
+                        <h4>⭐ Сложность: Легко · ⏱️ 40 мин</h4>
+                        <ul class="ingredient-list">
+                            <li><input type="checkbox"> Филе карася (300 г)</li>
+                            <li><input type="checkbox"> Кабачок (100 г)</li>
+                            <li><input type="checkbox"> Яйцо (1 шт.)</li>
+                            <li><input type="checkbox"> Овсяные хлопья (2 ст.л.)</li>
+                            <li><input type="checkbox"> Зелень, соль, перец</li>
+                        </ul>
+                        <ol class="step-list">
+                            <li>Пропустить филе и кабачок через мясорубку.</li>
+                            <li>Добавить яйцо, овсянку, специи.</li>
+                            <li>Сформировать котлеты.</li>
+                            <li>Готовить на пару 20 минут.</li>
+                            <li>Подавать с овощным салатом.</li>
+                        </ol>
+                        <div class="chef-secret">🌿 Секрет шефа: Карась содержит много мелких костей — перед фаршем тщательно удалите их пинцетом. Овсянка впитает лишнюю влагу и сделает котлеты нежными.</div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- МОДУЛЬ 3: НИЖНЕЕ МЕНЮ -->
+        <footer class="bottom-nav">
+            <button class="nav-btn" aria-label="Чек-лист">
+                <span>🏕️</span> Чек-лист
+            </button>
+            <button class="nav-btn" aria-label="Погода">
+                <span>🌤️</span> Погода
+            </button>
+            <button class="nav-btn active" aria-label="Другая рыба">
+                <span>🐟</span> Рыба
+            </button>
+            <button class="nav-btn" aria-label="Рецепты">
+                <span>🥧</span> Рецепты
+            </button>
+        </footer>
+    </div>
+</body>
+</html>
