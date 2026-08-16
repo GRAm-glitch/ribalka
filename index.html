@@ -2,568 +2,553 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🐟 Карась — Поплавочный Навигатор 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Чек-лист питбайка — готовность</title>
     <style>
         :root {
-            --bg: #121824;
-            --card: #1e293b;
-            --card-border: #2d3a4f;
-            --accent-blue: #38bdf8;
-            --accent-green: #4ade80;
-            --accent-orange: #fbbf24;
-            --accent-red: #ef4444;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --alert-bg: #1e293b;
-            --alert-border: #f59e0b;
-            --radius: 16px;
+            --bg: #121212;
+            --card: #1e1e1e;
+            --card-hover: #242424;
+            --text: #e0e0e0;
+            --text-muted: #8a8a8a;
+            --accent: #ff6a00;
+            --accent-soft: rgba(255, 106, 0, 0.15);
+            --success: #34c759;
+            --danger: #ff3b30;
+            --warning: #ffcc00;
+            --radius-lg: 24px;
+            --radius-md: 16px;
             --radius-sm: 10px;
-            --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-            --transition: 0.2s ease;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            font-size: 17px;
-            -webkit-text-size-adjust: 100%;
         }
 
         body {
-            background: var(--bg);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.55;
-            padding: 0 12px 24px;
-            min-height: 100vh;
-            max-width: 460px;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            padding: 20px 16px;
+            max-width: 600px;
             margin: 0 auto;
-            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* ==== HEADER ==== */
-        header {
+        h1 {
+            font-size: 2rem;
             text-align: center;
-            padding: 28px 12px 20px;
-            border-bottom: 2px solid var(--card-border);
-            margin-bottom: 20px;
-            position: relative;
-        }
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-blue), var(--accent-green), transparent);
-        }
-        .fish-emoji {
-            font-size: 4rem;
-            display: block;
-            margin-bottom: 6px;
-            animation: gentle-bob 3s ease-in-out infinite;
-        }
-        @keyframes gentle-bob {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-        header h1 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--accent-blue);
-            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-        }
-        .status-badge {
-            display: inline-block;
-            margin-top: 10px;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid var(--accent-blue);
-            color: var(--text-secondary);
-            padding: 7px 18px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            color: var(--accent);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+            font-weight: 700;
         }
 
-        /* ==== CARDS ==== */
-        .card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius);
-            padding: 20px 18px;
-            margin-bottom: 18px;
-            box-shadow: var(--shadow);
-            transition: border-color var(--transition);
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
         }
-        .card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 14px;
-            color: var(--text-primary);
+
+        .checklist-container {
+            background-color: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 20px 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid #2a2a2a;
+        }
+
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 0 8px;
+        }
+
+        .progress-info {
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .card h3 .emoji-badge {
-            font-size: 1.3rem;
-            flex-shrink: 0;
+            gap: 12px;
+            flex: 1;
+            margin-right: 16px;
         }
 
-        .card ul {
-            list-style: none;
-            padding: 0;
-        }
-        .card ul li {
-            padding: 8px 0 8px 28px;
-            position: relative;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            border-bottom: 1px dashed rgba(148, 163, 184, 0.15);
-        }
-        .card ul li:last-child {
-            border-bottom: none;
-        }
-        .card ul li::before {
-            content: '▸';
-            position: absolute;
-            left: 6px;
-            color: var(--accent-green);
-            font-weight: bold;
-        }
-
-        .highlight {
-            color: var(--accent-green);
-            font-weight: 700;
-        }
-        .highlight-blue {
-            color: var(--accent-blue);
-            font-weight: 700;
-        }
-        .highlight-orange {
-            color: var(--accent-orange);
-            font-weight: 700;
-        }
-        .measure {
-            display: inline-block;
-            background: rgba(74, 222, 128, 0.12);
-            border: 1px solid rgba(74, 222, 128, 0.3);
-            border-radius: 6px;
-            padding: 1px 8px;
-            font-weight: 700;
-            color: var(--accent-green);
-            font-size: 0.9em;
-        }
-        .measure-blue {
-            background: rgba(56, 189, 248, 0.12);
-            border-color: rgba(56, 189, 248, 0.3);
-            color: var(--accent-blue);
-        }
-
-        /* ==== TIME BLOCKS ==== */
-        .time-blocks {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .time-block {
-            background: rgba(30, 41, 59, 0.7);
-            border-left: 4px solid var(--accent-blue);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            padding: 10px 14px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .time-block .time-label {
-            font-weight: 700;
-            color: var(--accent-blue);
-            display: block;
-            margin-bottom: 3px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .time-block.evening {
-            border-left-color: var(--accent-orange);
-        }
-        .time-block.evening .time-label {
-            color: var(--accent-orange);
-        }
-        .time-block.day {
-            border-left-color: var(--accent-green);
-        }
-        .time-block.day .time-label {
-            color: var(--accent-green);
-        }
-
-        /* ==== SVG SCHEME ==== */
-        .scheme {
-            background: #0d1420;
-            border-radius: var(--radius-sm);
-            padding: 14px 10px;
-            margin-bottom: 16px;
-            border: 1px solid var(--card-border);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .scheme svg {
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 340px;
-            height: auto;
-        }
-
-        /* ==== BAIT GRID ==== */
-        .grid-menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 6px;
-        }
-        .bait-card {
-            background: #162032;
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-sm);
-            padding: 14px 12px;
-            text-align: center;
-            transition: border-color var(--transition), transform var(--transition);
-            cursor: default;
-        }
-        .bait-card:active {
-            transform: scale(0.97);
-            border-color: var(--accent-blue);
-        }
-        .bait-card .bait-emoji {
-            font-size: 2.2rem;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .bait-card .bait-name {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        .bait-card .bait-tip {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            line-height: 1.35;
-        }
-        .bait-card.span-2 {
-            grid-column: span 2;
-            background: rgba(251, 191, 36, 0.06);
-            border-color: rgba(251, 191, 36, 0.35);
-        }
-        .bait-card.span-2 .bait-name {
-            color: var(--accent-orange);
+        .progress-text {
+            font-weight: 600;
             font-size: 1rem;
-        }
-        .bait-card.span-2 .bait-emoji {
-            font-size: 2.6rem;
+            color: var(--text);
+            white-space: nowrap;
         }
 
-        /* ==== ALERT CARD ==== */
-        .card.alert {
-            border-color: var(--alert-border);
-            background: linear-gradient(145deg, #1e293b, #1a2330);
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.12);
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background-color: #333;
+            border-radius: 20px;
+            overflow: hidden;
+            min-width: 60px;
         }
-        .card.alert h3 {
-            color: var(--accent-orange);
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #ff9f4a);
+            border-radius: 20px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .card.alert p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            background: rgba(245, 158, 11, 0.06);
-            border-radius: var(--radius-sm);
-            padding: 14px 16px;
-            border-left: 3px solid var(--accent-orange);
-            margin-top: 4px;
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: color 0.3s, transform 0.2s;
+            line-height: 1;
         }
-        .card.alert .bite-steps {
-            margin-top: 12px;
+
+        .reset-btn:hover {
+            color: var(--accent);
+            transform: rotate(180deg);
+        }
+
+        .reset-btn:active {
+            transform: rotate(180deg) scale(0.9);
+        }
+
+        .checklist {
+            list-style: none;
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-        .bite-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: var(--radius-sm);
-            padding: 10px 12px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+
+        .check-item {
+            background-color: var(--card-hover);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            animation: itemFadeIn 0.4s ease forwards;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: background-color 0.3s;
         }
-        .bite-step .step-num {
-            background: var(--accent-orange);
-            color: #121824;
-            font-weight: 800;
-            font-size: 0.8rem;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
+
+        .check-item:hover {
+            background-color: #2d2d2d;
+        }
+
+        @keyframes itemFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Стили для чекбокса */
+        .check-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .check-item label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        .custom-check {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            margin-top: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
-        /* ==== FOOTER ==== */
-        footer {
-            text-align: center;
-            padding: 18px 12px 8px;
+        .custom-check::after {
+            content: "✓";
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #000;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .check-text {
+            font-size: 1.05rem;
+            color: var(--text);
+            position: relative;
+            flex: 1;
+            transition: color 0.3s;
+        }
+
+        .check-text::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0%;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+
+        /* Состояние checked */
+        .check-item input[type="checkbox"]:checked + label .custom-check {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(255, 106, 0, 0.5);
+        }
+
+        .check-item input[type="checkbox"]:checked + label .custom-check::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .check-item input[type="checkbox"]:checked + label .check-text {
             color: var(--text-muted);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--card-border);
-            margin-top: 8px;
-            letter-spacing: 0.3px;
         }
 
-        /* ==== RESPONSIVE ==== */
-        @media (max-width: 360px) {
-            html {
-                font-size: 15px;
+        .check-item input[type="checkbox"]:checked + label .check-text::after {
+            width: 100%;
+        }
+
+        /* Медиа-запросы */
+        @media (max-width: 480px) {
+            .check-item label {
+                padding: 12px 12px;
+                gap: 12px;
             }
-            .card {
-                padding: 16px 14px;
+            .custom-check {
+                width: 24px;
+                height: 24px;
+                border-radius: 7px;
             }
-            .bait-card .bait-emoji {
-                font-size: 1.8rem;
+            .check-text {
+                font-size: 0.95rem;
             }
-            .bait-card .bait-tip {
-                font-size: 0.7rem;
-            }
-            header h1 {
-                font-size: 1.6rem;
-            }
-            .fish-emoji {
-                font-size: 3.2rem;
+            .progress-text {
+                font-size: 0.9rem;
             }
         }
-        @media (min-width: 400px) {
-            .card {
-                padding: 22px 20px;
-            }
-            .bait-card .bait-emoji {
-                font-size: 2.4rem;
-            }
-        }
-        @media (max-width: 340px) {
-            .grid-menu {
-                grid-template-columns: 1fr;
-            }
-            .bait-card.span-2 {
-                grid-column: span 1;
-            }
-            .card ul li {
-                font-size: 0.85rem;
-                padding-left: 22px;
-            }
-        }
+
+        /* Анимация при загрузке для каждого пункта (задержка) */
+        .check-item:nth-child(1) { animation-delay: 0.05s; }
+        .check-item:nth-child(2) { animation-delay: 0.1s; }
+        .check-item:nth-child(3) { animation-delay: 0.15s; }
+        .check-item:nth-child(4) { animation-delay: 0.2s; }
+        .check-item:nth-child(5) { animation-delay: 0.25s; }
+        .check-item:nth-child(6) { animation-delay: 0.3s; }
+        .check-item:nth-child(7) { animation-delay: 0.35s; }
+        .check-item:nth-child(8) { animation-delay: 0.4s; }
+        .check-item:nth-child(9) { animation-delay: 0.45s; }
+        .check-item:nth-child(10) { animation-delay: 0.5s; }
+        .check-item:nth-child(11) { animation-delay: 0.55s; }
+        .check-item:nth-child(12) { animation-delay: 0.6s; }
+        .check-item:nth-child(13) { animation-delay: 0.65s; }
+        .check-item:nth-child(14) { animation-delay: 0.7s; }
+        .check-item:nth-child(15) { animation-delay: 0.75s; }
+        .check-item:nth-child(16) { animation-delay: 0.8s; }
+        .check-item:nth-child(17) { animation-delay: 0.85s; }
+        .check-item:nth-child(18) { animation-delay: 0.9s; }
+        .check-item:nth-child(19) { animation-delay: 0.95s; }
+        .check-item:nth-child(20) { animation-delay: 1s; }
+        .check-item:nth-child(21) { animation-delay: 1.05s; }
+        .check-item:nth-child(22) { animation-delay: 1.1s; }
+        .check-item:nth-child(23) { animation-delay: 1.15s; }
+        .check-item:nth-child(24) { animation-delay: 1.2s; }
+        .check-item:nth-child(25) { animation-delay: 1.25s; }
+        .check-item:nth-child(26) { animation-delay: 1.3s; }
+        .check-item:nth-child(27) { animation-delay: 1.35s; }
+        .check-item:nth-child(28) { animation-delay: 1.4s; }
+        .check-item:nth-child(29) { animation-delay: 1.45s; }
+        .check-item:nth-child(30) { animation-delay: 1.5s; }
     </style>
 </head>
 <body>
+    <h1>🔧 Готовность питбайка</h1>
+    <div class="subtitle">Отметь все пункты перед выездом</div>
 
-    <!-- ==================== HEADER ==================== -->
-    <header>
-        <span class="fish-emoji">🐟</span>
-        <h1>Карась</h1>
-        <span class="status-badge">📋 Инструкция для малых водоемов и луж</span>
-    </header>
+    <div class="checklist-container">
+        <div class="checklist-header">
+            <div class="progress-info">
+                <span class="progress-text" id="progressText">0 / 30</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <button class="reset-btn" id="resetBtn" title="Сбросить все">↺</button>
+        </div>
 
-    <!-- ==================== СЕКЦИЯ 1: МЕСТО ==================== -->
-    <section class="card">
-        <h3><span class="emoji-badge">📍</span> 1. Куда забрасывать? (Поиск точки)</h3>
-        <ul>
-            <li><span class="highlight">Граница камыша</span> — карась держится в 1–2 метрах от стены растительности.</li>
-            <li><span class="highlight">Окна в ряске</span> — любые чистые просветы среди водной зелени — идеальная точка.</li>
-            <li><span class="highlight">Тень от деревьев</span> — в жару карась уходит в затенённые участки у берега.</li>
-            <li><span class="highlight">Глубина</span> — оптимально <span class="measure">0.5–1.5 м</span>. Глубже карась в луже не уходит.</li>
-            <li><span class="highlight">Коряги и ветки в воде</span> — под ними карась прячется от хищника.</li>
+        <ul class="checklist" id="checklist">
+            <li class="check-item">
+                <input type="checkbox" id="chk1">
+                <label for="chk1">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Проверить уровень масла (щуп, 900 мл)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk2">
+                <label for="chk2">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Прокачать тормоза, проверить колодки</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk3">
+                <label for="chk3">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Натяжение цепи (15–25 мм провис)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk4">
+                <label for="chk4">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Смазать цепь (литий или спец. смазка)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk5">
+                <label for="chk5">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Давление в шинах (1.0–1.2 атм)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk6">
+                <label for="chk6">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Затяжка спиц (звон ключом)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk7">
+                <label for="chk7">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Протяжка осей колёс (перед/зад)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk8">
+                <label for="chk8">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Воздушный фильтр пропитан маслом</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk9">
+                <label for="chk9">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Проверить свечу зажигания (нагар, зазор)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk10">
+                <label for="chk10">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Зазоры клапанов (0.05 впуск / 0.08 выпуск)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk11">
+                <label for="chk11">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Работа карбюратора (холостой ход, отклик)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk12">
+                <label for="chk12">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Герметичность топливной системы</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk13">
+                <label for="chk13">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Заряд аккумулятора (если есть)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk14">
+                <label for="chk14">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Фары, стоп-сигнал, поворотники (если есть)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk15">
+                <label for="chk15">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Крепление руля и рычагов</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk16">
+                <label for="chk16">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Подтяжка подножек и кронштейнов</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk17">
+                <label for="chk17">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Состояние амортизаторов (утечки, люфт)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk18">
+                <label for="chk18">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Крепление защиты двигателя и рамы</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk19">
+                <label for="chk19">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Наличие топлива (и запасной канистры)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk20">
+                <label for="chk20">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Инструменты и запчасти с собой</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk21">
+                <label for="chk21">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Защитная экипировка (шлем, очки, перчатки)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk22">
+                <label for="chk22">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Проверить буксатор (римлок) заднего колеса</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk23">
+                <label for="chk23">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Лапка КПП притянута тросиком (защита)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk24">
+                <label for="chk24">
+                    <span class="custom-check"></span>
+                    <span class="check-text">CDI защищён от воды (камера/изолента)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk25">
+                <label for="chk25">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Подтяжка гаек и болтов двигателя</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk26">
+                <label for="chk26">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Проверить работу сцепления</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk27">
+                <label for="chk27">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Отсутствие подтёков масла и топлива</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk28">
+                <label for="chk28">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Замок руля и ключи (не забыть)</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk29">
+                <label for="chk29">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Документы и аптечка</span>
+                </label>
+            </li>
+            <li class="check-item">
+                <input type="checkbox" id="chk30">
+                <label for="chk30">
+                    <span class="custom-check"></span>
+                    <span class="check-text">Позвонить/написать куда едешь</span>
+                </label>
+            </li>
         </ul>
-        <div class="time-blocks">
-            <div class="time-block">
-                <span class="time-label">🌅 Утро (5:00–9:00)</span>
-                Мелководье у камыша. Вода прогрелась за ночь — карась активно кормится у берега.
-            </div>
-            <div class="time-block day">
-                <span class="time-label">☀️ День (11:00–16:00)</span>
-                Уходит глубже: ямки, тень от деревьев, граница растительности. Ловить на 0.8–1.2 м.
-            </div>
-            <div class="time-block evening">
-                <span class="time-label">🌆 Вечер (18:00–21:00)</span>
-                Снова выходит на мель. Ищи у камыша и в окнах ряски. Самый клёв — за час до заката.
-            </div>
-        </div>
-    </section>
+    </div>
 
-    <!-- ==================== СЕКЦИЯ 2: СНАСТЬ ==================== -->
-    <section class="card">
-        <h3><span class="emoji-badge">⚙️</span> 2. Как собрать удочку на коленке</h3>
+    <script>
+        (function() {
+            const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+            const resetBtn = document.getElementById('resetBtn');
+            const totalChecks = checkboxes.length;
 
-        <div class="scheme">
-            <svg viewBox="0 0 340 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема поплавочной снасти">
-                <!-- Водная линия -->
-                <line x1="50" y1="175" x2="290" y2="175" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8,5" opacity="0.7"/>
-                <text x="282" y="169" fill="#38bdf8" font-size="10" font-weight="600" text-anchor="end">ВОДА</text>
+            function updateProgress() {
+                let checked = 0;
+                checkboxes.forEach(cb => {
+                    if (cb.checked) checked++;
+                });
+                const percent = (checked / totalChecks) * 100;
+                progressText.textContent = `${checked} / ${totalChecks}`;
+                progressFill.style.width = percent + '%';
+            }
 
-                <!-- Стопоры -->
-                <circle cx="165" cy="72" r="5" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
-                <circle cx="165" cy="84" r="5" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
-                <text x="180" y="82" fill="#e2e8f0" font-size="11" font-weight="600">Стопоры</text>
+            // Инициализация
+            updateProgress();
 
-                <!-- Антенна поплавка -->
-                <line x1="165" y1="88" x2="165" y2="120" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
-                <text x="180" y="108" fill="#fca5a5" font-size="10">Антенна</text>
+            // Слушатели изменений
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', updateProgress);
+            });
 
-                <!-- Тело поплавка -->
-                <ellipse cx="165" cy="142" rx="14" ry="22" fill="#fbbf24" stroke="#d97706" stroke-width="1.2"/>
-                <text x="188" y="147" fill="#e2e8f0" font-size="11" font-weight="600">Поплавок</text>
-                <text x="188" y="160" fill="#94a3b8" font-size="9">0.5–1.5 г</text>
+            // Сброс всех чекбоксов
+            resetBtn.addEventListener('click', function() {
+                checkboxes.forEach(cb => {
+                    cb.checked = false;
+                });
+                updateProgress();
+            });
 
-                <!-- Леска от поплавка к грузилу -->
-                <line x1="165" y1="164" x2="165" y2="250" stroke="#94a3b8" stroke-width="2"/>
-                <text x="180" y="220" fill="#94a3b8" font-size="10">Осн. леска</text>
-                <text x="180" y="232" fill="#94a3b8" font-size="9">0.14–0.16 мм</text>
-
-                <!-- Основное грузило -->
-                <circle cx="165" cy="258" r="8" fill="#475569" stroke="#94a3b8" stroke-width="1.5"/>
-                <text x="184" y="262" fill="#e2e8f0" font-size="11" font-weight="600">Грузило</text>
-                <text x="184" y="274" fill="#94a3b8" font-size="9">основное</text>
-
-                <!-- Леска к подпаску -->
-                <line x1="165" y1="266" x2="165" y2="310" stroke="#94a3b8" stroke-width="1.5"/>
-                <text x="180" y="292" fill="#94a3b8" font-size="9">0.5–0.7 мм</text>
-
-                <!-- Подпасок -->
-                <circle cx="165" cy="318" r="5" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
-                <text x="180" y="322" fill="#e2e8f0" font-size="10">Подпасок</text>
-
-                <!-- Поводок -->
-                <line x1="165" y1="323" x2="165" y2="370" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,2"/>
-                <text x="180" y="350" fill="#94a3b8" font-size="10">Поводок</text>
-                <text x="180" y="362" fill="#94a3b8" font-size="9">0.10–0.12 мм, 15–20 см</text>
-
-                <!-- Крючок -->
-                <path d="M 165 370 L 165 388 C 165 405, 140 408, 130 398 C 122 390, 128 376, 140 380 C 147 382, 148 390, 145 394"
-                fill="none" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="145" cy="394" r="2" fill="#cbd5e1"/>
-                <text x="112" y="418" fill="#e2e8f0" font-size="11" font-weight="600">Крючок №14–16</text>
-
-                <!-- Стрелки направления -->
-                <text x="28" y="55" fill="#64748b" font-size="9" text-anchor="middle">ВЕРХ</text>
-                <text x="28" y="430" fill="#64748b" font-size="9" text-anchor="middle">НИЗ</text>
-            </svg>
-        </div>
-
-        <ul>
-            <li><span class="highlight-blue">Леска основная:</span> <span class="measure measure-blue">0.14–0.16 мм</span> — монофил, мягкая, тёмная.</li>
-            <li><span class="highlight-blue">Поводок:</span> <span class="measure measure-blue">0.10–0.12 мм</span>, длина <span class="measure">15–20 см</span> — тоньше основной, чтобы не пугать карася.</li>
-            <li><span class="highlight-blue">Поплавок:</span> веретенообразный, <span class="measure">0.5–1.5 г</span> — чувствительный, для тихой воды.</li>
-            <li><span class="highlight-blue">Огрузка:</span> основное грузило + подпасок у поводка. Подпасок — <span class="measure">0.5–0.7 мм</span> дробинка.</li>
-            <li><span class="highlight-blue">Крючок:</span> №14–16 (международная), тёмный, с коротким цевьём. Карась — рыба осторожная.</li>
-            <li><span class="highlight">Проверка огрузки:</span> над водой должна торчать только антенна поплавка (1–2 см). Грузила не должны лежать на дне.</li>
-        </ul>
-    </section>
-
-    <!-- ==================== СЕКЦИЯ 3: НАЖИВКИ ==================== -->
-    <section class="card">
-        <h3><span class="emoji-badge">🐛</span> 3. Топ наживок для карася</h3>
-        <div class="grid-menu">
-            <div class="bait-card">
-                <span class="bait-emoji">🪱</span>
-                <div class="bait-name">Червь</div>
-                <div class="bait-tip">Насаживать «чулком» — вдоль тела. Жало закрыто полностью.</div>
-            </div>
-            <div class="bait-card">
-                <span class="bait-emoji">🐛</span>
-                <div class="bait-name">Опарыш</div>
-                <div class="bait-tip">2–3 шт. пучком. Жало можно чуть открыть — карась смелее берёт.</div>
-            </div>
-            <div class="bait-card">
-                <span class="bait-emoji">🍞</span>
-                <div class="bait-name">Хлеб / Тесто</div>
-                <div class="bait-tip">Шарик размером с горошину. Жало закрыть полностью, хлеб мягкий.</div>
-            </div>
-            <div class="bait-card">
-                <span class="bait-emoji">🌽</span>
-                <div class="bait-name">Кукуруза / Перловка</div>
-                <div class="bait-tip">1–2 зерна на крючок. Жало открыть — карась засекается сам.</div>
-            </div>
-            <div class="bait-card span-2">
-                <span class="bait-emoji">🥪</span>
-                <div class="bait-name">Секретный «Бутерброд»</div>
-                <div class="bait-tip">Червь + опарыш вместе на одном крючке. Лучшая комбинация для пассивного карася — проверено!</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== СЕКЦИЯ 4: ПРИКОРМКА ==================== -->
-    <section class="card">
-        <h3><span class="emoji-badge">🥣</span> 4. Тактика прикормки для новичка</h3>
-        <ul>
-            <li><span class="highlight">Состав из супермаркета:</span> панировочные сухари <span class="measure">200 г</span> + манка <span class="measure">50 г</span> + молотые семечки (жмых) <span class="measure">30 г</span>. Всё смешать, добавить воды до лепки.</li>
-            <li><span class="highlight">Стартовый закорм:</span> <span class="measure">3–5 шаров</span> размером с теннисный мяч. Кидать точно в точку ловли, не разбрасывая.</li>
-            <li><span class="highlight">Удержание:</span> каждые <span class="measure">15–20 минут</span> подбрасывать <span class="measure">1 маленький шарик</span> (размером с грецкий орех) или горсть.</li>
-            <li><span class="highlight">Не перекормить!</span> В луже карась быстро наедается. Лучше недокормить, чем перекормить.</li>
-            <li><span class="highlight">Ароматика:</span> капля ванилина или чесночного сока в прикормку — карась это любит.</li>
-        </ul>
-    </section>
-
-    <!-- ==================== СЕКЦИЯ 5: ПОКЛЕВКА ==================== -->
-    <section class="card alert">
-        <h3><span class="emoji-badge">💡</span> 5. Как клюёт и когда подсекать?</h3>
-        <p>
-            Карась — рыба капризная. Поплавок может вести себя по-разному. Вот основные сценарии поклёвки:
-        </p>
-        <div class="bite-steps">
-            <div class="bite-step">
-                <span class="step-num">1</span>
-                <span><strong>Ведёт в сторону</strong> — поплавок плавно уходит вбок. Это уверенная поклёвка. Подсекай через 2–3 секунды.</span>
-            </div>
-            <div class="bite-step">
-                <span class="step-num">2</span>
-                <span><strong>Топит</strong> — поплавок медленно уходит под воду. Подсекай, когда антенна скроется полностью.</span>
-            </div>
-            <div class="bite-step">
-                <span class="step-num">3</span>
-                <span><strong>Выкладывает</strong> — поплавок ложится набок и лежит на воде. Карась взял наживку и стоит на месте. Подсекай сразу!</span>
-            </div>
-            <div class="bite-step">
-                <span class="step-num">4</span>
-                <span><strong>Дрожит и приседает</strong> — карась пробует наживку. Не торопись. Жди уверенного движения.</span>
-            </div>
-        </div>
-        <p style="margin-top:14px; border-left-color: var(--accent-green); background: rgba(74,222,128,0.06);">
-            ⚡ <strong class="highlight">Совет:</strong> Подсекай коротко и резко, но не сильно — губы у карася мягкие. Дай рыбе «попробовать» 2–3 секунды, не выдёргивай при первом дрожании поплавка.
-        </p>
-    </section>
-
-    <!-- ==================== FOOTER ==================== -->
-    <footer>
-        <p>📱 Поплавочный Навигатор 2.0 • Работает автономно</p>
-        <p style="margin-top:4px; font-size:0.7rem; opacity:0.7;">🐟 Карась • Малые водоёмы и лужи</p>
-    </footer>
-
+            // Небольшая анимация при загрузке уже учтена через CSS animation-delay
+        })();
+    </script>
 </body>
 </html>
